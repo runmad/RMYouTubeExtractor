@@ -2,7 +2,7 @@
 
 `RMYouTubeExtractor` provides an easy way to obtain MP4 URLs for your iOS apps by providing a YouTube video identifier.
 
-This library borrows code from XCDYouTubeVideoPlayerViewController[https://github.com/0xced/XCDYouTubeVideoPlayerViewController] by Cédric Luthi - sans the MPMoviePlayerController, allowing you to just extract the URLs and roll your own player. 
+This library borrows code from [XCDYouTubeVideoPlayerViewController] by Cédric Luthi - sans the MPMoviePlayerController, allowing you to just extract the URLs and roll your own player. 
 
 ## Requirements
 
@@ -48,7 +48,7 @@ See demo project for an example of how to use the extractor.
 
 Developed by Rune Madsen ([@runmad] and [runmad.com]).
 
-Credit to Cédric Luthi[http://github.com/0xced] for his work on extraction code.
+Credit to [Cédric Luthi] for his work on extraction code.
 
 ##Feedback
 
@@ -59,3 +59,8 @@ I'd love to see and hear from you if you use it in a project.
 ## License
 
 RMYouTubeExtractor is available under the MIT license. See the LICENSE file for more information.
+
+[XCDYouTubeVideoPlayerViewController]: https://github.com/0xced/XCDYouTubeVideoPlayerViewController
+[@runmad]: http://www.twitter.com/runmad
+[runmad.com]: http://www.runmad.com
+[Cédric Luthi] : http://github.com/0xced
