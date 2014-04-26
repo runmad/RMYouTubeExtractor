@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
     :tag => s.version.to_s
   }
   s.platform     = :ios, ‘7.0’
-  s.source_files = '*.{h,m}'
+  s.source_files = 'RMYouTubeExtractor'
+  s.frameworks   = 'AVFoundation'
   s.requires_arc = true
 end
