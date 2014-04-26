@@ -5,10 +5,12 @@
 //  Created by Rune Madsen on 2014-04-26.
 //  Copyright (c) 2014 The App Boutique. All rights reserved.
 //
+//  Extraction code inspired by XCDYouTubeVideoPlayerViewController
+//  https://github.com/0xced/XCDYouTubeVideoPlayerViewController
+//  by Cédric Luthi
 
 #import "RMYouTubeExtractor.h"
-#import <AVFoundation/AVFoundation.h>
-//#import <objc/runtime.h>
+@import AVFoundation;
 
 static NSDictionary *DictionaryWithQueryString(NSString *string, NSStringEncoding encoding) {
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];

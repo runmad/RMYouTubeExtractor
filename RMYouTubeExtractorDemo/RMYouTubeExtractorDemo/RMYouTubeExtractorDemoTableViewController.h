@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 The App Boutique. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface RMYouTubeExtractorDemoTableViewController : UITableViewController
 
 @end
