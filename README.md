@@ -32,7 +32,7 @@ $ pod install
 
 ```objc
 [[RMYouTubeExtractor sharedInstance] extractVideoForIdentifier:youtubeID
-                                                        completion:^(NSDictionary *videoDictionary, NSError *error) {
+                                                    completion:^(NSDictionary *videoDictionary, NSError *error) {
                                                         }];
 ```
 
