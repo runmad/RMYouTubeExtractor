@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RMYouTubeExtractor'
-  s.version      = ‘0.1’
+  s.version      = ‘0.2’
   s.summary      = 'RMYouTubeExtractor provides an easy way to obtain MP4 URLs for your iOS apps by providing a YouTube video identifier.'
   s.homepage     = 'https://github.com/runmad/RMSwipeTableViewCell'
   s.author       = { 'Rune Madsen' => 'runemadsen@mac.com' }
