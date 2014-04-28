@@ -56,6 +56,13 @@ static NSString *CellIdentifier = @"CellIdentifier";
                                                                 }
                                                                 self.videoArray = [mutableArray copy];
                                                                 [self.tableView reloadData];
+                                                            } else {
+                                                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Occurred"
+                                                                                                                    message:[error localizedFailureReason]
+                                                                                                                   delegate:nil
+                                                                                                          cancelButtonTitle:nil
+                                                                                                          otherButtonTitles:@"OK", nil];
+                                                                [alertView show];
                                                             }
                                                         }];
 }

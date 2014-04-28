@@ -6,6 +6,14 @@
 //  Copyright (c) 2014 The App Boutique. All rights reserved.
 //
 
+typedef NS_ENUM (NSUInteger, RMYouTubeExtractorAttemptType) {
+	RMYouTubeExtractorAttemptTypeEmbedded = 0,
+	RMYouTubeExtractorAttemptTypeDetailPage,
+    RMYouTubeExtractorAttemptTypeVevo,
+    RMYouTubeExtractorAttemptTypeBlank,
+    RMYouTubeExtractorAttemptTypeError
+};
+
 typedef NS_ENUM (NSUInteger, RMYouTubeExtractorVideoQuality) {
 	RMYouTubeExtractorVideoQualitySmall240  = 36,
 	RMYouTubeExtractorVideoQualityMedium360 = 18,
@@ -18,5 +26,7 @@ typedef NS_ENUM (NSUInteger, RMYouTubeExtractorVideoQuality) {
 +(RMYouTubeExtractor*)sharedInstance;
 
 -(void)extractVideoForIdentifier:(NSString*)videoIdentifier completion:(void (^)(NSDictionary *videoDictionary, NSError *error))completion;
+
+-(NSArray*)preferredVideoQualities;
 
 @end

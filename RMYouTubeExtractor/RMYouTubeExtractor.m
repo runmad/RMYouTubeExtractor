@@ -12,6 +12,12 @@
 #import "RMYouTubeExtractor.h"
 @import AVFoundation;
 
+@interface RMYouTubeExtractor ()
+
+@property (nonatomic, assign) RMYouTubeExtractorAttemptType attemptType;
+
+@end
+
 static NSDictionary *DictionaryWithQueryString(NSString *string, NSStringEncoding encoding) {
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	NSArray *fields = [string componentsSeparatedByString:@"&"];
@@ -60,9 +66,32 @@ static NSString *ApplicationLanguageIdentifier(void)
 
 -(void)extractVideoForIdentifier:(NSString*)videoIdentifier completion:(void (^)(NSDictionary *videoDictionary, NSError *error))completion {
     if (videoIdentifier && [videoIdentifier length] > 0) {
+        if (self.attemptType == RMYouTubeExtractorAttemptTypeError) {
+            NSError *error = [NSError errorWithDomain:@"com.theappboutique.rmyoutubeextractor" code:404 userInfo:@{ NSLocalizedFailureReasonErrorKey : @"Unable to find playable content" }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, error);
+            });
+            self.attemptType = RMYouTubeExtractorAttemptTypeEmbedded;
+            return;
+        }
         NSMutableDictionary *parameters = [@{} mutableCopy];
+        switch (self.attemptType) {
+            case RMYouTubeExtractorAttemptTypeEmbedded:
+                parameters[@"el"] = @"embedded";
+                break;
+            case RMYouTubeExtractorAttemptTypeDetailPage:
+                parameters[@"el"] = @"detailpage";
+                break;
+            case RMYouTubeExtractorAttemptTypeVevo:
+                parameters[@"el"] = @"vevo";
+                break;
+            case RMYouTubeExtractorAttemptTypeBlank:
+                parameters[@"el"] = @"";
+                break;
+            default:
+                break;
+        }
         parameters[@"video_id"] = videoIdentifier;
-        parameters[@"el"] = @"embedded";
         parameters[@"ps"] = @"default";
         parameters[@"eurl"] = @"";
         parameters[@"gl"] = @"US";
@@ -97,17 +126,28 @@ static NSString *ApplicationLanguageIdentifier(void)
                            }
                        }
                        
+                       BOOL contentIsAvailable = NO;
+                       
                        NSMutableDictionary *videoDictionary = [@{} mutableCopy];
                        for (NSNumber *videoQuality in [self preferredVideoQualities]) {
                            videoDictionary[videoQuality] = [NSNull null];
                            NSURL *streamURL = streamURLs[videoQuality];
                            if (streamURL) {
                                videoDictionary[videoQuality] = streamURL;
+                               contentIsAvailable = YES;
                            }
                        }
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           completion(videoDictionary, nil);
-                       });
+                       
+                       self.attemptType++;
+                       
+                       if (!contentIsAvailable) {
+                           [self extractVideoForIdentifier:videoIdentifier completion:completion];
+                       } else {
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               completion(videoDictionary, nil);
+                           });
+                       }
+                       
                    } else {
                        dispatch_async(dispatch_get_main_queue(), ^{
                            completion(nil, error);
