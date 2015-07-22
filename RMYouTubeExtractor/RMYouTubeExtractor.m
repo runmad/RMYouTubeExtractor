@@ -143,6 +143,7 @@ static NSString *ApplicationLanguageIdentifier(void)
                        if (!contentIsAvailable) {
                            [self extractVideoForIdentifier:videoIdentifier completion:completion];
                        } else {
+                           self.attemptType = RMYouTubeExtractorAttemptTypeEmbedded;
                            dispatch_async(dispatch_get_main_queue(), ^{
                                completion(videoDictionary, nil);
                            });
