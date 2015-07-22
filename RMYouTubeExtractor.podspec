@@ -6,10 +6,10 @@ Pod::Spec.new do |s|
   s.author       = { 'Rune Madsen' => 'runemadsen@mac.com' }
   s.license      = {  :type => 'MIT', :file => 'LICENSE' }
   s.source       = {
-    :git => 'https://github.com/runmad/RMYouTubeExtractor.git’,
+    :git => 'https://github.com/runmad/RMYouTubeExtractor.git',
     :tag => s.version.to_s
   }
-  s.platform     = :ios, ‘7.0’
+  s.platform     = :ios, '7.0'
   s.source_files = 'RMYouTubeExtractor'
   s.frameworks   = 'AVFoundation'
   s.requires_arc = true
