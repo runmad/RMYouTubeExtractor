@@ -36,7 +36,7 @@ $ pod install
                                                         }];
 ```
 
-The instance returns a dictionary with up to 4 video qualities: 240p, 360p, 720p and 1080p. 1080p is rare.
+The instance returns a dictionary with up to 3 video qualities: 240p, 360p and 720p.
 
 Don’t forget to check for empty dictionary / errors.
 
