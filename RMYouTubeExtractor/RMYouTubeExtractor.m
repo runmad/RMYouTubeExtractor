@@ -58,8 +58,7 @@ static NSString *ApplicationLanguageIdentifier(void)
 }
 
 -(NSArray*)preferredVideoQualities {
-    return @[ @(RMYouTubeExtractorVideoQualityHD1080), // unfortunately it doesn't look like 1080p is available and will most likely always return null
-              @(RMYouTubeExtractorVideoQualityHD720),
+    return @[ @(RMYouTubeExtractorVideoQualityHD720),
               @(RMYouTubeExtractorVideoQualityMedium360),
               @(RMYouTubeExtractorVideoQualitySmall240) ];
 }
@@ -97,7 +96,7 @@ static NSString *ApplicationLanguageIdentifier(void)
         parameters[@"gl"] = @"US";
         parameters[@"hl"] = ApplicationLanguageIdentifier();
         
-        NSString *urlString = [self addQueryStringToUrlString:@"https://www.youtube.com/get_video_info" withParamters:parameters];
+        NSString *urlString = [self addQueryStringToUrlString:@"https://www.youtube.com/get_video_info" withParameters:parameters];
         
         NSURLSession *session = [NSURLSession sharedSession];
         [[session dataTaskWithURL:[NSURL URLWithString:urlString]
@@ -116,43 +115,36 @@ static NSString *ApplicationLanguageIdentifier(void)
                            NSString *urlString = stream[@"url"];
                            if (urlString && [AVURLAsset isPlayableExtendedMIMEType:type]) {
                                NSURL *streamURL = [NSURL URLWithString:urlString];
-                               NSString *signature = stream[@"sig"];
-                               if (signature) {
-                                   streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@&signature=%@", urlString, signature]];
+                               BOOL hasSignature = [[DictionaryWithQueryString(streamURL.query, queryEncoding) allKeys] containsObject:@"signature"];
+                               if (!hasSignature && stream[@"sig"]) {
+                                   streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@&signature=%@", urlString, stream[@"sig"]]];
+                                   hasSignature = YES;
                                }
-                               if ([[DictionaryWithQueryString(streamURL.query, queryEncoding) allKeys] containsObject:@"signature"]) {
+                               if (hasSignature && ([stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualitySmall240 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityMedium360 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityHD720)) {
                                    streamURLs[@([stream[@"itag"] integerValue])] = streamURL;
                                }
                            }
-                       }
-                       
-                       BOOL contentIsAvailable = NO;
-                       
-                       NSMutableDictionary *videoDictionary = [@{} mutableCopy];
-                       for (NSNumber *videoQuality in [self preferredVideoQualities]) {
-                           videoDictionary[videoQuality] = [NSNull null];
-                           NSURL *streamURL = streamURLs[videoQuality];
-                           if (streamURL) {
-                               videoDictionary[videoQuality] = streamURL;
-                               contentIsAvailable = YES;
+                           if ([[streamURLs allKeys] count] == 3) {
+                               break;
                            }
                        }
                        
                        self.attemptType++;
                        
-                       if (!contentIsAvailable) {
+                       if ([[streamURLs allKeys] count] == 0) {
                            [self extractVideoForIdentifier:videoIdentifier completion:completion];
                        } else {
-                           self.attemptType = RMYouTubeExtractorAttemptTypeEmbedded;
                            dispatch_async(dispatch_get_main_queue(), ^{
-                               completion(videoDictionary, nil);
+                               completion(streamURLs, nil);
                            });
+                           self.attemptType = RMYouTubeExtractorAttemptTypeEmbedded;
                        }
                        
                    } else {
                        dispatch_async(dispatch_get_main_queue(), ^{
                            completion(nil, error);
                        });
+                       self.attemptType = RMYouTubeExtractorAttemptTypeEmbedded;
                    }
                }
          ] resume];
@@ -170,7 +162,7 @@ static NSString *ApplicationLanguageIdentifier(void)
 }
 
 
-- (NSString*)addQueryStringToUrlString:(NSString *)urlString withParamters:(NSDictionary *)dictionary {
+- (NSString*)addQueryStringToUrlString:(NSString *)urlString withParameters:(NSDictionary *)dictionary {
     NSMutableString *urlWithQuerystring = [[NSMutableString alloc] initWithString:urlString];
     for (id key in dictionary) {
         NSString *keyString = [key description];

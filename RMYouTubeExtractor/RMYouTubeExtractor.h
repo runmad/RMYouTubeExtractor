@@ -18,7 +18,6 @@ typedef NS_ENUM (NSUInteger, RMYouTubeExtractorVideoQuality) {
 	RMYouTubeExtractorVideoQualitySmall240  = 36,
 	RMYouTubeExtractorVideoQualityMedium360 = 18,
 	RMYouTubeExtractorVideoQualityHD720     = 22,
-	RMYouTubeExtractorVideoQualityHD1080    = 37,
 };
 
 @interface RMYouTubeExtractor : NSObject
