@@ -66,13 +66,13 @@ See demo project for an example of how to use the extractor.
 * Initial release
 
 
-##Credit
+## Credit
 
 Developed by Rune Madsen ([@runmad] and [runmad.com]).
 
 Credit to [Cédric Luthi] for his work on extraction code.
 
-##Feedback
+## Feedback
 
 I appreciate feedback. Create Github issues, pull requests or connect with me on Twitter.
 
