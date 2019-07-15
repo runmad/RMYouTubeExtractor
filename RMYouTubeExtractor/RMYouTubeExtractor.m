@@ -120,7 +120,7 @@ static NSString *ApplicationLanguageIdentifier(void)
                                    streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@&signature=%@", urlString, stream[@"sig"]]];
                                    hasSignature = YES;
                                }
-                               if (hasSignature && ([stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualitySmall240 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityMedium360 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityHD720)) {
+                               if (([stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualitySmall240 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityMedium360 || [stream[@"itag"] integerValue] == RMYouTubeExtractorVideoQualityHD720)) {
                                    streamURLs[@([stream[@"itag"] integerValue])] = streamURL;
                                }
                            }
